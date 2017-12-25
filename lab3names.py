@@ -22,15 +22,19 @@ def extr_name(filename):
     res = re.findall(r'<tr align="right"><td>([0-9]+)</td><td>([A-Z][a-z]+)</td><td>([A-Z][a-z]+)</td>',read_data)
     women = []
     men = []
+    topw = []
+    topm = []
     for x in res:
         men.append(x[1] + ' ' + x[0])
         women.append(x[2] + ' ' + x[0])
+        if int(x[0]) <= 10:
+            topw.append(x[2])
+            topm.append(x[1])
     new.extend((two(women,men)))
+    print(new)
+    print(topm)
+    print(topw)
     return new
-
-#def top(filename):
-
-
 
 def main():
     args = sys.argv[1:]
@@ -39,11 +43,9 @@ def main():
         sys.exit(1)
     for x in args:
         ret = extr_name(x)
-        print(ret)
     return 0
 
         # для каждого переданного аргументом имени файла, вывести имена  extr_name
-
         # напечатать ТОП-10 муж и жен имен из всех переданных файлов
 
 
