@@ -43,6 +43,7 @@ def main():
         sys.exit(1)
     for x in args:
         ret = extr_name(x)
+        print("\n")
     return 0
 
         # для каждого переданного аргументом имени файла, вывести имена  extr_name
