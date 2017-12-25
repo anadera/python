@@ -17,7 +17,7 @@ def extr_name(filename):
     f = open(filename,'r')
     read_data = f.read()
     f.close()
-    new=[]
+    new = []
     new.append(year)
     res = re.findall(r'<tr align="right"><td>([0-9]+)</td><td>([A-Z][a-z]+)</td><td>([A-Z][a-z]+)</td>',read_data)
     women = []
@@ -45,10 +45,8 @@ def main():
         ret = extr_name(x)
         print("\n")
     return 0
-
         # для каждого переданного аргументом имени файла, вывести имена  extr_name
         # напечатать ТОП-10 муж и жен имен из всех переданных файлов
-
 
 if __name__ == '__main__':
     main()
