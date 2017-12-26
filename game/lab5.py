@@ -1,0 +1,71 @@
+import requests
+import re
+import webbrowser
+import random
+from http.server import HTTPServer, CGIHTTPRequestHandler
+
+def save_page(url, file):
+  #url = 'https://www.biographyonline.net/people/famous-100.html'
+  r = requests.get(url)
+  with open(file, 'w') as output_file:
+    output_file.write(r.text)
+
+def extr_name(filename, rgx):
+    f = open(filename,'r')
+    read_data = f.read()
+    f.close()
+    res = re.findall(rgx,read_data)
+    return res
+
+def level(lvl):
+  rgx = r'<li><a href="\D*">([A-Z][a-z]+ [A-Z][a-z]+)</a>'
+  list = extr_name('test.html', rgx)
+  print(list[:lvl])
+  return list[:lvl]
+
+def search(name):
+  page = save_page('https://www.google.ru/search?q=' + name + '&newwindow=1&espv=2&source=lnms&tbm=isch&sa=X', 'tmp.html')
+  rgx = r'img height="\d+" src="(\S+)" width="\d+"'
+  pics = extr_name('tmp.html',rgx)
+  return random.choice(pics)
+
+def show_pic(url):
+  webbrowser.open(url)
+
+def guess(name, list, lvl):
+  answers = []
+  answers.append(name)
+  i=0
+  while i<3:
+    x = random.randint(1, lvl-1)
+    if list[x] not in answers:
+      answers.append(list[x])
+      i = i + 1
+  random.shuffle(answers)
+  return answers
+
+def check_answer(answer, name):
+  return True if answer == name else False
+
+"""
+def create_webpage():
+  server_address = ("", 8000)
+  httpd = HTTPServer(server_address, CGIHTTPRequestHandler)
+  httpd.serve_forever()
+  print("Content-type: text/html")
+  print()
+  print("<h1>Hello world!</h1>")
+"""
+
+def main():
+  save_page('https://www.biographyonline.net/people/famous-100.html', 'test.html')
+  list = level(10)
+  name = random.choice(list)
+  pic = search(name)
+  #create_webpage()
+  show_pic(pic)
+  print(guess(name,list,10))
+  return 0
+
+if __name__ == '__main__':
+    main()
