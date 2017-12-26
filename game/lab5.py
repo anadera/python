@@ -5,7 +5,6 @@ import random
 from http.server import HTTPServer, CGIHTTPRequestHandler
 
 def save_page(url, file):
-  #url = 'https://www.biographyonline.net/people/famous-100.html'
   r = requests.get(url)
   with open(file, 'w') as output_file:
     output_file.write(r.text)
@@ -18,13 +17,12 @@ def extr_name(filename, rgx):
     return res
 
 def level(lvl):
-  rgx = r'<li><a href="\D*">([A-Z][a-z]+ [A-Z][a-z]+)</a>'
-  list = extr_name('test.html', rgx)
-  #print(list[:lvl])
+  rgx_ref = r'<li><a href="\D*">([A-Z][a-z]+\s*[A-Z]*[a-z]*\s*[A-Z]*[a-z]*)</a>'
+  list = extr_name('test.html', rgx_ref)
   return list[:lvl]
 
 def search(name):
-  page = save_page('https://www.google.ru/search?q=' + name + '&newwindow=1&espv=2&source=lnms&tbm=isch&sa=X', 'tmp.html')
+  save_page('https://www.google.ru/search?q=' + name + '&newwindow=1&espv=2&source=lnms&tbm=isch&sa=X', 'tmp.html')
   rgx = r'img height="\d+" src="(\S+)" width="\d+"'
   pics = extr_name('tmp.html',rgx)
   return random.choice(pics)
@@ -37,7 +35,9 @@ def guess(name, list, lvl):
   answers.append(name)
   i=0
   while i<3:
-    x = random.randint(1, lvl-1)
+    x = random.randint(0, int(lvl-1))
+    print('x ', x)
+    print('length ', len(list))
     if list[x] not in answers:
       answers.append(list[x])
       i = i + 1
