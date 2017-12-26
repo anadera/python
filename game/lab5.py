@@ -36,8 +36,6 @@ def guess(name, list, lvl):
   i=0
   while i<3:
     x = random.randint(0, int(lvl-1))
-    print('x ', x)
-    print('length ', len(list))
     if list[x] not in answers:
       answers.append(list[x])
       i = i + 1
@@ -61,7 +59,6 @@ def main():
   print("Select level (1,2,3):")
   lvl = int(input())
   levels = ['10', '50', '100']
-  print(levels[lvl-1])
   lvl = int(levels[lvl-1])
   list = level(lvl)
   state = True
