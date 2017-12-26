@@ -20,7 +20,7 @@ def extr_name(filename, rgx):
 def level(lvl):
   rgx = r'<li><a href="\D*">([A-Z][a-z]+ [A-Z][a-z]+)</a>'
   list = extr_name('test.html', rgx)
-  print(list[:lvl])
+  #print(list[:lvl])
   return list[:lvl]
 
 def search(name):
@@ -47,24 +47,33 @@ def guess(name, list, lvl):
 def check_answer(answer, name):
   return True if answer == name else False
 
-"""
-def create_webpage():
+"""def create_webpage():
   server_address = ("", 8000)
   httpd = HTTPServer(server_address, CGIHTTPRequestHandler)
   httpd.serve_forever()
   print("Content-type: text/html")
   print()
-  print("<h1>Hello world!</h1>")
-"""
+  print("<h1>Hello world!</h1>")"""
 
 def main():
-  save_page('https://www.biographyonline.net/people/famous-100.html', 'test.html')
-  list = level(10)
-  name = random.choice(list)
-  pic = search(name)
   #create_webpage()
-  show_pic(pic)
-  print(guess(name,list,10))
+  save_page('https://www.biographyonline.net/people/famous-100.html', 'test.html')
+  print("Select level (1,2,3):")
+  lvl = int(input())
+  levels = ['10', '50', '100']
+  print(levels[lvl-1])
+  lvl = int(levels[lvl-1])
+  list = level(lvl)
+  state = True
+  while state:
+    name = random.choice(list)
+    pic = search(name)
+    show_pic(pic)
+    print(guess(name,list,lvl))
+    answer = input()
+    print(check_answer(answer,name))
+    if check_answer(answer, name) == False:
+      exit()
   return 0
 
 if __name__ == '__main__':
